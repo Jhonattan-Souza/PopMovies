@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Pop Movies</string>
+
+    <string name="action_settings" translatable="true">Configuration</string>
+    <string name="pref_title_movie_order" translatable="true">Display Order</string>
+    <string name="pref_top_rated" translatable="true">Highest Rating</string>
+    <string name="pref_popular" translatable="true">More Popular</string>
+
+    <string name="pref_top_rated_key" translatable="false">top_rated</string>
+    <string name="pref_popular_key" translatable="false">popular</string>
+    <string name="pref_order_list_key" translatable="false">order</string>
+    <string name="movie_object_key" translatable="false">movie_object</string>
+
+    <string name="title_activity_detail" translatable="false">DetailActivity</string>
+
+    <string name="movie_rate_range">/10</string>
+
+    <string name="try_again_message" translatable="true">
+        No internet connection. Wi-Fi or cellular network data must be active. Try again.
+    </string>
+    <string name="try_again_button_message" translatable="true">Try Again</string>
+
+    <string name="default_placeholder" translatable="true">Lorem Ipsum</string>
+    <string name="movie_image_description" translatable="true">Movie Thumbnail</string>
+</resources>

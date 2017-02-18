@@ -1,0 +1,29 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="movie_title_style">
+        <item name="android:textSize">@dimen/movie_title_text_size</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingLeft">@dimen/movie_title_left_padding</item>
+        <item name="android:paddingRight">@dimen/movie_title_left_padding</item>
+        <item name="android:paddingTop">@dimen/movie_title_top_padding</item>
+        <item name="android:paddingBottom">@dimen/movie_title_bottom_padding</item>
+        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+
+</resources>

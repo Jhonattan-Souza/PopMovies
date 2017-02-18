@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.android.popmovies.fragments.MainActivityFragment"
+    tools:showIn="@layout/activity_main">
+
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
+    <GridView
+        android:id="@+id/gridview_movies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit"
+        android:columnWidth="150dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/linear_internet_error"
+        android:visibility="gone"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textSize="20sp"
+            android:text="@string/try_again_message" />
+
+        <Button
+            android:id="@+id/bt_internet_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/try_again_button_message" />
+    </LinearLayout>
+
+</RelativeLayout>
