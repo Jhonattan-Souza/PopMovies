@@ -2,11 +2,9 @@ package com.example.android.popmovies.retrofit;
 
 import android.util.Log;
 
-import com.example.android.popmovies.models.*;
+import com.example.android.popmovies.models.PopMovies;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,39 +13,31 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PopMoviesController implements Callback<PopMovies> {
+    private String LOG_TAG = PopMoviesController.class.getSimpleName();
 
-    public void start() {
-        Gson gson = new GsonBuilder().create();
+    public void execute(String movieOrder) {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(PopMoviesAPI.BASE_URL)
+                .baseUrl(PopMoviesAPI.MOVIE_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         PopMoviesAPI popMoviesAPI = retrofit.create(PopMoviesAPI.class);
 
-        Call<PopMovies> callMovie = popMoviesAPI.getPopMovies();
+        // Get all movies by the parameter passed String. (From Shared Preferences)
+        Call<PopMovies> callMovie = popMoviesAPI.getAllMoviesByOrder(movieOrder);
 
         callMovie.enqueue(this);
     }
-
+    
     @Override
-    public void onResponse(Call<PopMovies> call, Response<PopMovies> response) {
-        if(response.isSuccessful()) {
-            List<com.example.android.popmovies.models.Movie> changesList = response.body().getResults();
-
-            for (com.example.android.popmovies.models.Movie movie : changesList) {
-                System.out.println(movie.getTitle());
-            }
-
-
-        } else {
-            System.out.println(response.errorBody());
-        }
-    }
+    public void onResponse(Call<PopMovies> call, Response<PopMovies> response) {}
 
     @Override
     public void onFailure(Call<PopMovies> call, Throwable t) {
-        Log.e("MovieTest", t.getMessage(), t);
+        Log.e(LOG_TAG, t.getMessage(), t);
     }
 }

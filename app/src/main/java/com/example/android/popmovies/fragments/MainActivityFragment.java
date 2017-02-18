@@ -2,11 +2,9 @@ package com.example.android.popmovies.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +16,19 @@ import com.example.android.popmovies.R;
 import com.example.android.popmovies.activities.DetailActivity;
 import com.example.android.popmovies.models.Movie;
 import com.example.android.popmovies.models.MovieAdapter;
-import com.example.android.popmovies.utilities.JsonUtils;
+import com.example.android.popmovies.models.PopMovies;
+import com.example.android.popmovies.retrofit.PopMoviesController;
 import com.example.android.popmovies.utilities.NetworkUtils;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class MainActivityFragment extends Fragment {
     @BindView(R.id.linear_internet_error) LinearLayout mLinearErrorLayout;
@@ -108,52 +106,18 @@ public class MainActivityFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String movieOrder = prefs.getString(getString(R.string.pref_order_list_key), getString(R.string.pref_top_rated_key));
 
-        new FetchMovieTask().execute(movieOrder);
-    }
+        new PopMoviesController(){
+            @Override
+            public void onResponse(Call<PopMovies> call, Response<PopMovies> response) {
+                mLoadingIndicator.setVisibility(View.INVISIBLE);
 
-    /**
-     * Class responsible for running the task in the background.
-     */
-    public class FetchMovieTask extends AsyncTask<String, Object, ArrayList<Movie>> {
-        private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
+                if(response.isSuccessful()) {
+                    List<Movie> movies = response.body().getResults();
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected ArrayList<Movie> doInBackground(String... strings) {
-            String movieJsonStr;
-
-            try {
-                // Build the url with the order parameter.
-                URL url = NetworkUtils.buildUrl(strings[0]);
-
-                // Get response from HTTP.
-                movieJsonStr = NetworkUtils.getResponseFromHttpUrl(url);
-
-                // Returns the list of movies.
-                return new JsonUtils().getMovieDataFromJson(movieJsonStr);
-
-            } catch (JSONException|IOException ex) {
-                Log.e(LOG_TAG, ex.getMessage(), ex);
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Movie> movies) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movies != null) {
-                mMovieAdapter.clear();
-                for (Movie movie : movies) {
-                    mMovieAdapter.add(movie);
+                    mMovieAdapter.clear();
+                    mMovieAdapter.addAll(movies);
                 }
             }
-        }
+        }.execute(movieOrder);
     }
-
 }

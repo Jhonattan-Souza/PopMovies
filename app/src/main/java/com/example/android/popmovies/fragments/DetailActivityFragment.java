@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.popmovies.R;
 import com.example.android.popmovies.models.Movie;
-import com.example.android.popmovies.utilities.NetworkUtils;
-import com.squareup.picasso.Picasso;
+import com.example.android.popmovies.retrofit.PopMoviesAPI;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,8 +56,8 @@ public class DetailActivityFragment extends Fragment {
      */
     private void setObjectsValues(){
         // Picasso loads the cache image from the Main View.
-        Picasso.with(mViewRoot.getContext())
-                .load(NetworkUtils.IMAGE_BASE_URL + movie.getPoster_path())
+        Glide.with(mViewRoot.getContext())
+                .load(PopMoviesAPI.IMAGE_BASE_URL + movie.getPoster_path())
                 .placeholder(R.mipmap.user_placeholder)
                 .error(R.mipmap.user_placeholder_error)
                 .into(mMovieImageView);

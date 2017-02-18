@@ -8,9 +8,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface PopMoviesAPI {
-    String BASE_URL = "http://api.themoviedb.org/3/";
-    String IMAGE_URL = "http://image.tmdb.org/t/p/w342/";
-    String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
+    String MOVIE_BASE_URL = "http://api.themoviedb.org/3/";
+    String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w185/";
 
     String API_KEY = BuildConfig.OPEN_MOVIE_DB_API_KEY;
 

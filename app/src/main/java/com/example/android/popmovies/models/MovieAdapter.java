@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.popmovies.R;
-import com.example.android.popmovies.utilities.NetworkUtils;
-import com.squareup.picasso.Picasso;
+import com.example.android.popmovies.retrofit.PopMoviesAPI;
 
 import java.util.List;
 
@@ -33,8 +33,8 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.list_item_image);
 
-        Picasso.with(convertView.getContext())
-                .load(NetworkUtils.IMAGE_BASE_URL + movie.getPoster_path())
+        Glide.with(convertView.getContext())
+                .load(PopMoviesAPI.IMAGE_BASE_URL + movie.getPoster_path())
                 .placeholder(R.mipmap.user_placeholder)
                 .error(R.mipmap.user_placeholder_error)
                 .into(imageView);
