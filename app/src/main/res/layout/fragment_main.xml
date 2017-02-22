@@ -14,14 +14,11 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
-    <GridView
-        android:id="@+id/gridview_movies"
+    <com.example.android.popmovies.views.AutoFitRecyclerView
+        android:id="@+id/recycler_movies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="auto_fit"
-        android:columnWidth="150dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center" />
+        android:columnWidth="160dp" />
 
     <LinearLayout
         android:id="@+id/linear_internet_error"

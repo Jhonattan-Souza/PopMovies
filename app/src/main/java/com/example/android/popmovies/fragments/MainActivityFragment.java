@@ -8,34 +8,32 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.example.android.popmovies.R;
 import com.example.android.popmovies.activities.DetailActivity;
 import com.example.android.popmovies.models.Movie;
-import com.example.android.popmovies.models.MovieAdapter;
 import com.example.android.popmovies.models.PopMovies;
+import com.example.android.popmovies.models.PopMoviesAdapter;
 import com.example.android.popmovies.retrofit.PopMoviesController;
 import com.example.android.popmovies.utilities.NetworkUtils;
+import com.example.android.popmovies.views.AutoFitRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements PopMoviesAdapter.ListItemClickListener{
     @BindView(R.id.linear_internet_error) LinearLayout mLinearErrorLayout;
     @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
-    @BindView(R.id.gridview_movies) GridView mGridView;
+    @BindView(R.id.recycler_movies) AutoFitRecyclerView mMovieRecyclerView;
 
-    private MovieAdapter mMovieAdapter;
+    private List<Movie> mMovies;
 
     public MainActivityFragment() {}
 
@@ -51,29 +49,18 @@ public class MainActivityFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, rootView);
 
-        setGridAdapter();
-
         return rootView;
     }
 
     /**
-     * GridView initial adapter configurations.
+     * RecyclerView adapter configurations.
      */
-    private void setGridAdapter(){
-        // Initialize a empty adapter to GridView.
-        mMovieAdapter = new MovieAdapter(getActivity(), new ArrayList<Movie>());
-        mGridView.setAdapter(mMovieAdapter);
-    }
+    private void setMovieRecyclerAdapter(List<Movie> moviesList){
+        PopMoviesAdapter mMovieAdapter = new PopMoviesAdapter(moviesList, this);
 
-    /**
-     * Calls the DetailView.
-     * @param position The position of current movie selected in the Grid.
-     */
-    @OnItemClick(R.id.gridview_movies)
-    public void onGridItemSelected(int position){
-        Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(getString(R.string.movie_object_key), mMovieAdapter.getItem(position));
-        startActivity(intent);
+        mMovieRecyclerView.setHasFixedSize(true);
+
+        mMovieRecyclerView.setAdapter(mMovieAdapter);
     }
 
     /**
@@ -112,12 +99,17 @@ public class MainActivityFragment extends Fragment {
                 mLoadingIndicator.setVisibility(View.INVISIBLE);
 
                 if(response.isSuccessful()) {
-                    List<Movie> movies = response.body().getResults();
-
-                    mMovieAdapter.clear();
-                    mMovieAdapter.addAll(movies);
+                    mMovies = response.body().getResults();
+                    setMovieRecyclerAdapter(mMovies);
                 }
             }
         }.execute(movieOrder);
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(getString(R.string.movie_object_key), mMovies.get(clickedItemIndex));
+        startActivity(intent);
     }
 }
